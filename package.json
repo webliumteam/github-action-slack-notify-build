@@ -1,6 +1,6 @@
 {
   "name": "github-action-weblium-slack-notify-build",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "main": "index.js",
   "license": "Apache-2.0",
   "scripts": {
