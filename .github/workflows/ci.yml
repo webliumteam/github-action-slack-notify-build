@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js v12.x
-        uses: actions/setup-node@v1
+      - uses: actions/checkout@v6
+      - name: Use Node.js v24.x
+        uses: actions/setup-node@v6
         with:
-          node-version: 12
+          node-version: 24
       - name: Notify slack
         # Don't attempt to send Slack notifications on fork PRs which don't have access to secrets
         if: env.SLACK_BOT_TOKEN
@@ -27,8 +27,8 @@ jobs:
           color: warning
       - name: Get yarn cache
         id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v1
+        run: echo "dir=$(yarn cache dir)" >> "$GITHUB_OUTPUT"
+      - uses: actions/cache@v5
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -36,22 +36,16 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: yarn install and test
         run: |
-          yarn
+          yarn install --frozen-lockfile
           yarn test
         env:
           CI: true
       - name: yarn build
         run: yarn build
-      - name: release
-        if: ${{ endsWith(github.ref, '/main') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx semantic-release
-      - name: update v1 tag
-        if: ${{ endsWith(github.ref, '/main') }}
-        run: 'git push -f https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:refs/heads/v1'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify bundled action is up to date
+        run: |
+          git diff --exit-code -- dist/index.js
+          test -z "$(git status --porcelain --untracked-files=all -- dist)"
       - name: Notify slack success
         if: env.SLACK_BOT_TOKEN
         env:

@@ -2,6 +2,15 @@ import { formatChannelName, buildSlackAttachments } from '../src/utils';
 import { GITHUB_PUSH_EVENT, GITHUB_PR_EVENT } from '../fixtures';
 const runId = parseInt(process.env.GITHUB_RUN_ID, 10);
 
+jest.mock('@actions/github', () => ({
+  context: {
+    repo: {
+      owner: 'voxmedia',
+      repo: 'github-action-slack-notify-build',
+    },
+  },
+}));
+
 describe('Utils', () => {
   describe('formatChannelName', () => {
     it('strips #', () => {
@@ -61,12 +70,17 @@ describe('Utils', () => {
         });
       });
 
-      it('links to the branch', () => {
-        const attachments = buildSlackAttachments({ status: 'STARTED', color: 'good', github: GITHUB_PUSH_EVENT });
+      it('links to the deploy branch', () => {
+        const attachments = buildSlackAttachments({
+          status: 'STARTED',
+          color: 'good',
+          github: GITHUB_PUSH_EVENT,
+          deployBranch: 'my-branch',
+        });
 
         expect(attachments[0].fields.find(a => a.title === 'Branch')).toEqual({
           title: 'Branch',
-          value: `<https://github.com/voxmedia/github-action-slack-notify-build/commit/abc123 | my-branch>`,
+          value: `<https://github.com/voxmedia/github-action-slack-notify-build/tree/my-branch | my-branch>`,
           short: true,
         });
       });
