@@ -1,4 +1,4 @@
-# 1.7.1 (2026-09-01)
+# 1.7.1 (2026-09-03)
 
 ### Bug Fixes
 
@@ -7,36 +7,6 @@
 ### Maintenance
 
 - Build and test the action on Node.js 24 with the supported `@vercel/ncc` package.
-
-# 1.7.0 (2026-06-10)
-
-### Maintenance
-
-- Migrate the GitHub Action runtime from Node.js 12 to Node.js 24.
-
-# 1.6.3 (2022-01-21)
-
-### Maintenance
-
-- Reorder the event and status fields in Slack attachments.
-
-# 1.6.2 (2022-01-21)
-
-### Features
-
-- Add the deploy commit message and reorder Slack attachments.
-
-# 1.6.1 (2022-01-21)
-
-### Features
-
-- Add deploy branch, environment, and author fields to Slack attachments.
-
-# 1.6.0 (2022-01-21)
-
-### Maintenance
-
-- Rename the package and action for Weblium, clarify the workflow branch label, and rebuild bundled dependencies.
 
 # [1.5.0](https://github.com/voxmedia/github-action-slack-notify-build/compare/v1.4.0...v1.5.0) (2021-03-05)
 
