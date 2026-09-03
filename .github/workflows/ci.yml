@@ -46,6 +46,25 @@ jobs:
         run: |
           git diff --exit-code -- dist/index.js
           test -z "$(git status --porcelain --untracked-files=all -- dist)"
+
+      # Legacy automatic release steps are intentionally disabled.
+      # Releases have been created manually since v1.6.0. The release command
+      # used an unpinned semantic-release version with plugins from 2020, while
+      # the "update v1 tag" command force-pushed refs/heads/v1 (a branch, not a
+      # tag). Do not re-enable these steps without a separately reviewed update
+      # of the release process.
+      #
+      # - name: release
+      #   if: ${{ endsWith(github.ref, '/main') }}
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: npx semantic-release
+      # - name: update v1 tag
+      #   if: ${{ endsWith(github.ref, '/main') }}
+      #   run: 'git push -f https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git HEAD:refs/heads/v1'
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Notify slack success
         if: env.SLACK_BOT_TOKEN
         env:
