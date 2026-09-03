@@ -8,7 +8,11 @@ To report bugs or to request new features, you may [create a new issue](https://
 
 Please use [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) when contributing to the repository. If you've forgotten to use conventional commits, a maintainer can include the prefix in the merge commit when merging a PR.
 
-Releases happen automatically when merged into `main` with [semantic-release](https://semantic-release.gitbook.io/semantic-release/).
+Use Node.js 24 and Yarn 1.22.22 when installing dependencies, running tests, and rebuilding the action bundle.
+
+Update `package.json`, `CHANGELOG.md`, and the bundled `dist/index.js` in the release pull request. After the pull request is merged and CI passes, create an exact semantic-version tag such as `v1.7.1` and a matching GitHub Release on the merge commit.
+
+Do not move major-version aliases such as `v1` or `v2` unless that rollout has been reviewed separately.
 
 ## Code of Conduct
 
